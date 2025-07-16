@@ -4,7 +4,6 @@ const modalTitle = document.getElementById("modal-title");
 const modalPrereq = document.getElementById("modal-prereq");
 const closeModal = document.querySelector(".close-button");
 
-// Datos de la malla (extraídos del documento)
 const datos = {
   "Semestre 1": [
     { nombre: "Fundamentos de Administración", prereq: [] },
@@ -87,7 +86,6 @@ const datos = {
   ]
 };
 
-// Mostrar la malla
 Object.entries(datos).forEach(([semestre, ramos]) => {
   const contenedor = document.createElement("div");
   contenedor.className = "semestre";
