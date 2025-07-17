@@ -1,5 +1,6 @@
 const malla = document.getElementById("malla");
 
+// Datos por semestre y sus prerrequisitos
 const datos = {
   "Semestre 1": [
     { nombre: "Fundamentos de Administración", prereq: [] },
@@ -81,11 +82,15 @@ const datos = {
     { nombre: "Electivo 4", prereq: [] }
   ]
 };
+
+// Estado de aprobación de los ramos
 const ramosEstado = {};
 
+// Revisa y actualiza cuáles ramos pueden desbloquearse
 function actualizarDisponibilidad() {
   Object.keys(ramosEstado).forEach(nombre => {
     const div = document.querySelector(`[data-nombre='${nombre}']`);
+    if (!div) return;
     const prereqs = div.dataset.prereqs ? div.dataset.prereqs.split("|") : [];
     const desbloqueado = prereqs.every(p => ramosEstado[p]);
     if (desbloqueado) {
@@ -94,9 +99,11 @@ function actualizarDisponibilidad() {
   });
 }
 
+// Construir la malla visualmente
 Object.entries(datos).forEach(([semestre, ramos]) => {
   const contenedor = document.createElement("div");
   contenedor.className = "semestre";
+
   const titulo = document.createElement("h3");
   titulo.textContent = semestre;
   contenedor.appendChild(titulo);
@@ -108,7 +115,11 @@ Object.entries(datos).forEach(([semestre, ramos]) => {
     div.dataset.nombre = ramo.nombre;
     div.dataset.prereqs = ramo.prereq.join("|");
     ramosEstado[ramo.nombre] = false;
-    if (ramo.prereq.length === 0) div.classList.add("activo");
+
+    // Activar si no tiene prerequisitos
+    if (ramo.prereq.length === 0) {
+      div.classList.add("activo");
+    }
 
     div.addEventListener("click", () => {
       if (!div.classList.contains("activo")) return;
@@ -123,4 +134,5 @@ Object.entries(datos).forEach(([semestre, ramos]) => {
   malla.appendChild(contenedor);
 });
 
+// Primera actualización
 actualizarDisponibilidad();
